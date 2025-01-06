@@ -8,7 +8,7 @@ import Login from "./pages/Login.jsx";
 import Signin from "./pages/Signin.jsx";
 import UserDashboard from "./pages/UserDashboard.jsx";
 import Navbar from "./components/Navbar.jsx";
-import ProductPage from "./pages/ProductPage.JSX";
+import ProductPage from "./pages/ProductPage.jsx";
 import Products from "./pages/Products.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
