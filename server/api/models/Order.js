@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      required: true, // This ensures the name of the product is always included
+      required: true, 
     },
     quantity: {
       type: Number,

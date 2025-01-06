@@ -6,20 +6,17 @@ import User from "../models/User.js";
 export const placeOrder = async (req, res) => {
   const { productId, buyerId, quantity } = req.body;
   try {
-    // Find the product
     const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Check if there is enough stock
     if (product.quantity < quantity) {
       return res.status(400).json({ message: "Not enough stock available" });
     }
 
     const totalPrice = product.price * quantity;
 
-    // Create a new order
     const order = new Order({
       user: buyerId,
       product: productId,
@@ -30,11 +27,9 @@ export const placeOrder = async (req, res) => {
 
     await order.save();
 
-    // Decrease product quantity
     product.quantity -= quantity;
     await product.save();
 
-    // Update user orders
     const user = await User.findById(buyerId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -65,7 +60,7 @@ export const getUserOrders = async (req, res) => {
     const orders = await Order.find({ user: userId }).populate(
       "product",
       "name"
-    ); // Populate product name
+    );
     const formattedOrders = orders.map((order) => ({
       ...order.toObject(),
       productName: order.product.name,
@@ -146,11 +141,9 @@ export const withdrawOrder = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Add the quantity back to the product stock
     product.quantity += order.quantity;
     await product.save();
 
-    // Delete the order
     await Order.findByIdAndDelete(orderId);
 
     const user = await User.findById(userId);
@@ -158,7 +151,6 @@ export const withdrawOrder = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Remove the order from the user's orders list
     user.orders = user.orders.filter(
       (userOrder) => userOrder.orderID.toString() !== orderId
     );
@@ -169,7 +161,7 @@ export const withdrawOrder = async (req, res) => {
       message: "Order withdrawn successfully",
       productName: order.name,
       quantity: order.quantity,
-      updatedStock: product.quantity, // Return updated product stock
+      updatedStock: product.quantity,
     });
   } catch (error) {
     console.error("Error withdrawing order:", error);

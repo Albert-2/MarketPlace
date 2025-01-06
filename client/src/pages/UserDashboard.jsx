@@ -23,7 +23,7 @@ function UserDashboard() {
   const username = "User";
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/orders/user/${userId}`)
+    fetch(`${import.meta.env.VITE_API_DOMAIN}/api/orders/user/${userId}`)
       .then((response) => response.json())
       .then((data) => {
         const deliveredOrders = data.filter(
@@ -34,8 +34,9 @@ function UserDashboard() {
         );
         setOrders({ delivered: deliveredOrders, pending: pendingOrders });
       });
-    console.log(userId);
-    fetch(`http://localhost:5000/api/products/userproducts/${userId}`)
+    fetch(
+      `${import.meta.env.VITE_API_DOMAIN}/api/products/userproducts/${userId}`
+    )
       .then((response) => response.json())
       .then((data) => setProducts(data));
   }, [userId]);
@@ -77,19 +78,24 @@ function UserDashboard() {
       return;
     }
 
-    fetch(`http://localhost:5000/api/products/update/${editProduct._id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: updatedProduct.name,
-        description: updatedProduct.description,
-        price: updatedProduct.price,
-        image: updatedProduct.image,
-        userId,
-      }),
-    })
+    fetch(
+      `${import.meta.env.VITE_API_DOMAIN}/api/products/update/${
+        editProduct._id
+      }`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: updatedProduct.name,
+          description: updatedProduct.description,
+          price: updatedProduct.price,
+          image: updatedProduct.image,
+          userId,
+        }),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         const updatedProducts = products.map((product) =>
@@ -107,7 +113,7 @@ function UserDashboard() {
     );
     if (!confirmWithdraw) return;
 
-    fetch(`http://localhost:5000/api/orders/delete`, {
+    fetch(`${import.meta.env.VITE_API_DOMAIN}/api/orders/delete`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -138,35 +144,31 @@ function UserDashboard() {
   const markOrderAsDelivered = async (orderId) => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/orders/delivered",
+        `${import.meta.env.VITE_API_DOMAIN}/api/orders/delivered`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            userId: userId, // User ID should be passed accordingly
+            userId: userId,
             orderId: orderId,
           }),
         }
       );
       const data = await response.json();
       if (response.ok) {
-        // Update the UI after successfully marking the order as delivered
         alert("Order marked as delivered");
 
-        // Find the order from the pending orders
         const updatedPendingOrders = orders.pending.filter(
           (order) => order._id !== orderId
         );
 
-        // Add the order to delivered orders
         const deliveredOrder = orders.pending.find(
           (order) => order._id === orderId
         );
         const updatedDeliveredOrders = [...orders.delivered, deliveredOrder];
 
-        // Update state without needing to refresh the page
         setOrders({
           delivered: updatedDeliveredOrders,
           pending: updatedPendingOrders,
@@ -186,13 +188,16 @@ function UserDashboard() {
     );
     if (!confirmDelete) return;
 
-    fetch(`http://localhost:5000/api/products/delete/${productId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId }), // Optional: If the backend needs userId
-    })
+    fetch(
+      `${import.meta.env.VITE_API_DOMAIN}/api/products/delete/${productId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId }),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.message === "Product deleted successfully") {
@@ -219,7 +224,6 @@ function UserDashboard() {
         </p>
       </div>
 
-      {/* Orders Section */}
       <div className="mb-8">
         <h2
           className="text-2xl font-semibold text-gray-800 mb-4 cursor-pointer"
@@ -259,7 +263,6 @@ function UserDashboard() {
         </div>
       </div>
 
-      {/* Products Section */}
       <div className="mx-auto">
         <h2
           className="text-2xl font-semibold text-gray-800 mb-4 cursor-pointer"

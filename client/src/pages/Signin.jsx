@@ -15,7 +15,6 @@ function Signin() {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    // Client-side validation
     if (!formData.username || !formData.email || !formData.password) {
       setError("All fields are required.");
       setSuccessMessage(null);
@@ -23,11 +22,14 @@ function Signin() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_DOMAIN}/api/auth/signup`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await response.json();
 
@@ -54,14 +56,12 @@ function Signin() {
           Signup
         </h1>
 
-        {/* Error Notification */}
         {error && (
           <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 border border-red-300 rounded">
             {error}
           </div>
         )}
 
-        {/* Success Notification */}
         {successMessage && (
           <div className="mb-4 p-3 text-sm text-green-700 bg-green-100 border border-green-300 rounded">
             {successMessage}
