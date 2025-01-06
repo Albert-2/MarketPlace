@@ -9,7 +9,6 @@ const connectDB = async () => {
         process.env.MONGO_PASS
       )}@clusterzero.3yk3x.mongodb.net/${process.env.MONGO_DB}`
     );
-    console.log("MongoDB connected");
   } catch (error) {
     console.error(error);
     process.exit(1);

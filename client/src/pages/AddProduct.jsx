@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUserId } from "../redux/userSlice"; // Path to your userSlice
+import { selectUserId } from "../redux/userSlice";
 
 function AddProduct() {
   const userId = useSelector(selectUserId);
@@ -19,7 +19,7 @@ function AddProduct() {
     description: "",
     price: "",
     image: "",
-    quantity: 1, // Add image field
+    quantity: 1,
   });
 
   const handleFileChange = (e) => {
@@ -27,15 +27,15 @@ function AddProduct() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFormData({ ...formData, userId, image: reader.result }); // Set Base64 string
+        setFormData({ ...formData, userId, image: reader.result });
       };
-      reader.readAsDataURL(file); // Convert to Base64
+      reader.readAsDataURL(file);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("http://localhost:5000/api/products", {
+    fetch(`${import.meta.env.VITE_API_DOMAIN}/api/products`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),

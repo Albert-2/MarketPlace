@@ -6,7 +6,6 @@ const Orders = ({
   handleMarkAsDelivered,
   isWithdraw,
 }) => {
-  // Define an array of background colors
   const backgroundColors = [
     "bg-blue-100",
     "bg-green-100",
@@ -26,7 +25,6 @@ const Orders = ({
                 backgroundColors[index % backgroundColors.length]
               } space-y-3 shadow-sm rounded-lg hover:shadow-md transition-shadow duration-300 py-2`}
             >
-              {/* Order Details */}
               <div className="w-full px-4 space-y-2">
                 <div className="w-full">
                   <h1 className="text-2xl font-bold text-gray-800 w-full mb-4">
@@ -54,7 +52,6 @@ const Orders = ({
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="space-x-2 px-4 font-semibold">
                 {isWithdraw && (
                   <button

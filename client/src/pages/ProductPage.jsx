@@ -27,7 +27,6 @@ const ProductPage = () => {
   return (
     <div className="h-[91vh] bg-gradient-to-br from-gray-50 to-gray-200 flex items-center justify-center">
       <div className="w-full mt-20 max-w-6xl mx-auto p-8 bg-white rounded-lg shadow-lg overflow-hidden flex flex-col lg:flex-row">
-        {/* Left Section: Product Image */}
         <div className="lg:w-1/2 flex items-center justify-center p-6 bg-gray-100">
           <img
             src={product.image}
@@ -36,7 +35,6 @@ const ProductPage = () => {
           />
         </div>
 
-        {/* Right Section: Product Details */}
         <div className="lg:w-1/2 sm:p-6 p-2 flex flex-col justify-between">
           <div className="space-y-4 py-2">
             <h1 className="sm:text-4xl text-lg font-bold text-gray-800">{product.name}</h1>
@@ -56,7 +54,7 @@ const ProductPage = () => {
           <div className="mt-0">
             <button
               onClick={(e) => {
-                e.preventDefault(); // Prevent default link behavior when clicking the button
+                e.preventDefault(); 
                 handleBuyNow();
               }}
               className="font-semibold text-lg text-center w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors duration-300"

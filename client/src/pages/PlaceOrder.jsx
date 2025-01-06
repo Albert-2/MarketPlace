@@ -47,7 +47,7 @@ const PlaceOrder = () => {
       return;
     }
 
-    fetch(`http://localhost:5000/api/orders`, {
+    fetch(`${import.meta.env.VITE_API_DOMAIN}/api/orders`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -77,7 +77,6 @@ const PlaceOrder = () => {
   return (
     <div className="container mx-auto mt-8 p-6 bg-gray-50 rounded-xl shadow-lg">
       <div className="flex flex-col md:flex-row gap-8">
-        {/* Left: Product Details */}
         <div className="md:w-1/2 bg-white p-4 rounded-xl shadow">
           {buyProduct ? (
             <div>
@@ -99,7 +98,6 @@ const PlaceOrder = () => {
           )}
         </div>
 
-        {/* Right: Order Form */}
         <div className="md:w-1/2 bg-white p-6 rounded-xl shadow-lg">
           <h2 className="text-3xl font-bold text-indigo-700 text-center mb-6">
             Place Your Order

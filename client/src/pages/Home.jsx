@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { useDispatch } from "react-redux";
-import { setProducts } from "../redux/productsSlice"; // Import actions
+import { setProducts } from "../redux/productsSlice";
 import { Link } from "react-router-dom";
 import Carousel from "../components/Carousel";
 import { useSelector } from "react-redux";
@@ -14,9 +14,8 @@ function Home() {
   const [salesProducts, setSalesProducts] = useState([]);
   const dispatch = useDispatch();
   const products2 = useSelector((state) => state.products.products);
-  console.log(products2);
   useEffect(() => {
-    fetch("http://localhost:5000/api/products")
+    fetch(`${import.meta.env.VITE_API_DOMAIN}/api/products`)
       .then((response) => response.json())
       .then((data) => {
         setProducts2(data);

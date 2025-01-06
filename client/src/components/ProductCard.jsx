@@ -1,19 +1,6 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function ProductCard({ product, btnShow }) {
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-  const navigate = useNavigate();
-
-  const handleBuyNow = () => {
-    if (isAuthenticated) {
-      const id = product._id;
-      navigate(`/place-order/${id}`);
-    } else {
-      navigate("/login");
-    }
-  };
-
   return (
     <Link
       to={`/product/${product._id}`}
@@ -29,7 +16,9 @@ function ProductCard({ product, btnShow }) {
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-80 transition-opacity duration-300 rounded-lg flex items-end p-4">
-          <p className="text-white font-semibold">{product.description}</p>
+          <p className="text-white font-semibold line-clamp-2">
+            {product.description}
+          </p>
         </div>
       </div>
 

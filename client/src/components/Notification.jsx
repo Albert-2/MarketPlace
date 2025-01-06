@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 
 const Notification = ({ message, onClose }) => {
   useEffect(() => {
-    const timer = setTimeout(onClose, 3000); // Close after 3 seconds
-    return () => clearTimeout(timer); // Clear timer on unmount
+    const timer = setTimeout(onClose, 3000); 
+    return () => clearTimeout(timer); 
   }, [onClose]);
 
   return (
