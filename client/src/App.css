@@ -1,0 +1,27 @@
+/* For modern browsers */
+::-webkit-scrollbar {
+  display: none; /* Hide scrollbar */
+}
+
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+/* App container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Navbar */
+.navbar {
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Content below the navbar */
+.page-content {
+  flex: 1; /* Take up remaining space */
+  display: flex;
+  flex-direction: column;
+}
