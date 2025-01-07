@@ -1,26 +1,26 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logoutUser, selectUserId } from "../redux/userSlice";
+import { logoutUser, selectUser } from "../redux/userSlice";
 
 const Navbar = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const dispatch = useDispatch();
-  const userId = useSelector(selectUserId);
+  const user = useSelector(selectUser);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const navigate = useNavigate();
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   return (
-    <nav className="bg-gray-800 text-white shadow sticky top-0 z-50">
+    <nav className="bg-gray-800 text-white shadow fixed w-full top-0 z-50">
       <div className="container mx-auto py-2 px-4 flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold">
           Marketplace
         </Link>
         <div className="flex items-center space-x-4">
-          {isAuthenticated && (
-            <Link to={`/user/${userId}`} className="relative">
+          {isAuthenticated && user?._id && (
+            <Link to={`/user/${user._id}`} className="relative">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-8 w-8 text-white hover:text-blue-400 transition"
@@ -38,7 +38,7 @@ const Navbar = () => {
             </Link>
           )}
           <button
-            className="sm:hidden text-white"
+            className="lg:hidden text-white"
             onClick={toggleMenu}
             aria-label="Toggle Menu"
           >
@@ -57,13 +57,16 @@ const Navbar = () => {
               />
             </svg>
           </button>
-          <div className="items-center space-x-4 py-2 px-4 sm:flex hidden">
+          <div className="hidden lg:flex items-center space-x-4">
             <Link to="/" className="hover:text-gray-300">
               Home
             </Link>
             {isAuthenticated ? (
               <button
-                onClick={() => dispatch(logoutUser())}
+                onClick={() => {
+                  dispatch(logoutUser());
+                  navigate("/login", { replace: true });
+                }}
                 className="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition"
               >
                 Logout
@@ -87,40 +90,41 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      <div
-        className={`${
-          isMenuOpen ? "max-h-40" : "max-h-0"
-        } overflow-hidden transition-[max-height] duration-300 ease-in-out lg:hidden bg-gray-700`}
-      >
-        <div className="flex flex-col space-y-2 py-2 px-4">
-          <Link to="/" className="hover:text-gray-300">
-            Home
-          </Link>
-          {isAuthenticated ? (
-            <button
-              onClick={() => dispatch(logoutUser())}
-              className="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition"
-            >
-              Logout
-            </button>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                className="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 transition"
+      {isMenuOpen && (
+        <div className="lg:hidden bg-gray-700">
+          <div className="flex flex-col space-y-2 py-2 px-4">
+            <Link to="/" className="hover:text-gray-300">
+              Home
+            </Link>
+            {isAuthenticated ? (
+              <button
+                onClick={() => {
+                  dispatch(logoutUser());
+                  navigate("/login", { replace: true });
+                }}
+                className="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition"
               >
-                Login
-              </Link>
-              <Link
-                to="/signin"
-                className="bg-green-500 px-4 py-2 rounded hover:bg-green-600 transition"
-              >
-                Signin
-              </Link>
-            </>
-          )}
+                Logout
+              </button>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 transition"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signin"
+                  className="bg-green-500 px-4 py-2 rounded hover:bg-green-600 transition"
+                >
+                  Signin
+                </Link>
+              </>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 };

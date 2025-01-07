@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUserId } from "../redux/userSlice";
+import { selectUser } from "../redux/userSlice";
 
 function AddProduct() {
-  const userId = useSelector(selectUserId);
+  const user = useSelector(selectUser);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ function AddProduct() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFormData({ ...formData, userId, image: reader.result });
+        setFormData({ ...formData, userId: user._id, image: reader.result });
       };
       reader.readAsDataURL(file);
     }

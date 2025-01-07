@@ -10,9 +10,9 @@ const Carousel = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % carouselImages.length);
-    }, 5000); 
+    }, 5000);
 
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, [carouselImages.length]);
   return (
     <div className="relative overflow-hidden h-[500px]">

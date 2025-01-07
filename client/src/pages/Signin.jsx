@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setUserId } from "../redux/userSlice";
+import { setUser } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
 function Signin() {
   const [formData, setFormData] = useState({
@@ -34,7 +34,7 @@ function Signin() {
       const data = await response.json();
 
       if (response.ok) {
-        dispatch(setUserId(data.user._id));
+        dispatch(setUser(data.user));
         setSuccessMessage("Signup successful! Redirecting...");
         setError(null);
         setFormData({ username: "", email: "", password: "" });
@@ -50,7 +50,7 @@ function Signin() {
   };
 
   return (
-    <div className="flex items-center justify-center h-[90vh]">
+    <div className="flex items-center justify-center h-screen">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
         <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
           Signup

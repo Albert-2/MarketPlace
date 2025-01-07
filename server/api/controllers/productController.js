@@ -19,7 +19,6 @@ export const addProduct = async (req, res) => {
   const { name, description, price, userId, image, quantity } = req.body;
 
   try {
-    // Check if the required fields are provided
     if (!name || !description || !price || !image || !quantity) {
       return res.status(400).json({ message: "Missing required fields" });
     }
@@ -33,10 +32,8 @@ export const addProduct = async (req, res) => {
       quantity,
     });
 
-    // Save the new product
     await newProduct.save();
 
-    // Add product to the user's listing (optional)
     const user = await User.findById(userId);
     user.products.push(newProduct._id);
     await user.save();
@@ -53,7 +50,7 @@ export const addProduct = async (req, res) => {
 // Update an existing product
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
-  const { name, description, price, userId, image } = req.body; // Make sure to accept image
+  const { name, description, price, userId, image } = req.body;
   try {
     const product = await Product.findById(id);
 
@@ -61,21 +58,18 @@ export const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Check if the logged-in user is the seller of the product
     if (product.seller.toString() !== userId) {
       return res
         .status(403)
         .json({ message: "You are not authorized to update this product" });
     }
 
-    // Update the product details
     product.name = name || product.name;
     product.description = description || product.description;
     product.price = price || product.price;
 
-    // Update image if provided
     if (image) {
-      product.image = image; // Assuming image URL or base64 string is provided
+      product.image = image;
     }
 
     await product.save();
@@ -92,7 +86,7 @@ export const updateProduct = async (req, res) => {
 // Delete a product
 export const deleteProduct = async (req, res) => {
   const { id } = req.params;
-  const { userId } = req.body; // Assuming the user is authenticated
+  const { userId } = req.body;
 
   try {
     const product = await Product.findById(id);
@@ -101,7 +95,6 @@ export const deleteProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Check if the logged-in user is the seller of the product
     if (product.seller.toString() !== userId) {
       return res
         .status(403)
@@ -110,7 +103,6 @@ export const deleteProduct = async (req, res) => {
 
     await Product.findByIdAndDelete(id);
 
-    // Optionally, remove the product from the user's list
     const user = await User.findById(userId);
     user.products.pull(id);
     await user.save();
@@ -126,20 +118,17 @@ export const deleteProduct = async (req, res) => {
 
 // Get all products contributed by a specific user
 export const getUserProducts = async (req, res) => {
-  const { userId } = req.params; // Assuming userId is passed as a query parameter
+  const { userId } = req.params;
 
   try {
-    // Validate userId
     if (!userId) {
       return res.status(400).json({ message: "User ID is required" });
     }
 
-    // Find all products where the seller matches the userId
     const products = await Product.find({ seller: userId }).populate(
       "seller",
       "username"
     );
-    // If no products are found, return a message
     if (!products || products.length === 0) {
       return res
         .status(404)

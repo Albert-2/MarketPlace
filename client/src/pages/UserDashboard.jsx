@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUserId } from "../redux/userSlice";
+import { selectUser } from "../redux/userSlice";
 import Orders from "../components/Orders";
 
 function UserDashboard() {
-  const userId = useSelector(selectUserId);
+  const user = useSelector(selectUser);
   const [orders, setOrders] = useState({ delivered: [], pending: [] });
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -21,9 +21,8 @@ function UserDashboard() {
   const [isProductsOpen, setIsProductsOpen] = useState(true);
 
   const username = "User";
-
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_DOMAIN}/api/orders/user/${userId}`)
+    fetch(`${import.meta.env.VITE_API_DOMAIN}/api/orders/user/${user._id}`)
       .then((response) => response.json())
       .then((data) => {
         const deliveredOrders = data.filter(
@@ -35,15 +34,29 @@ function UserDashboard() {
         setOrders({ delivered: deliveredOrders, pending: pendingOrders });
       });
     fetch(
-      `${import.meta.env.VITE_API_DOMAIN}/api/products/userproducts/${userId}`
+      `${import.meta.env.VITE_API_DOMAIN}/api/products/userproducts/${user._id}`
     )
       .then((response) => response.json())
-      .then((data) => setProducts(data));
-  }, [userId]);
+      .then((data) => {
+        // Check if the response contains a message indicating no products
+        if (data.message === "user has no products") {
+          setProducts([]); // Set products to an empty array
+        } else {
+          setProducts(data); // Set the products data
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching user products:", error);
+        // Optionally, handle the error state by showing a message or alert
+      });
+  }, []);
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredProducts =
+    Array.isArray(products) && products.length > 0
+      ? products.filter((product) =>
+          product.name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : [];
 
   const handleEditClick = (product) => {
     setEditProduct(product);
@@ -92,7 +105,7 @@ function UserDashboard() {
           description: updatedProduct.description,
           price: updatedProduct.price,
           image: updatedProduct.image,
-          userId,
+          userId: user._id,
         }),
       }
     )
@@ -119,7 +132,7 @@ function UserDashboard() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId,
+        userId: user._id,
         orderId,
       }),
     })
@@ -151,8 +164,8 @@ function UserDashboard() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            userId: userId,
-            orderId: orderId,
+            userId: user._id,
+            orderId,
           }),
         }
       );
@@ -195,7 +208,7 @@ function UserDashboard() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId }),
+        body: JSON.stringify({ userId: user._id }),
       }
     )
       .then((response) => response.json())
@@ -214,7 +227,7 @@ function UserDashboard() {
   };
 
   return (
-    <div className="container p-4  mx-auto">
+    <div className="container px-4 py-20 mx-auto">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800">
           Welcome, {username}!

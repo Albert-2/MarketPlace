@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUserId } from "../redux/userSlice";
+import { selectUser } from "../redux/userSlice";
 
 const PlaceOrder = () => {
   const [quantity, setQuantity] = useState(1);
@@ -14,7 +14,7 @@ const PlaceOrder = () => {
   const { id } = useParams();
   const products = useSelector((state) => state.products.products);
   const buyProduct = products.find((product) => product._id === id);
-  const userId = useSelector(selectUserId);
+  const user = useSelector(selectUser);
 
   const states = [
     "Andhra Pradesh",
@@ -52,7 +52,7 @@ const PlaceOrder = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         productId: buyProduct._id,
-        buyerId: userId,
+        buyerId: user._id,
         quantity,
       }),
     })

@@ -11,6 +11,7 @@ import Navbar from "./components/Navbar.jsx";
 import ProductPage from "./pages/ProductPage.jsx";
 import Products from "./pages/Products.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import ProtectedRoute from "./util/ProtectedRoute.jsx"; // Import the ProtectedRoute component
 
 function App() {
   return (
@@ -20,11 +21,32 @@ function App() {
         <div className="page-content">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/add-product" element={<AddProduct />} />
-            <Route path="/place-order/:id" element={<PlaceOrder />} />
+            <Route
+              path="/add-product"
+              element={
+                <ProtectedRoute>
+                  <AddProduct />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/place-order/:id"
+              element={
+                <ProtectedRoute>
+                  <PlaceOrder />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/login" element={<Login />} />
             <Route path="/signin" element={<Signin />} />
-            <Route path="/user/:userName" element={<UserDashboard />} />
+            <Route
+              path="/user/:userName"
+              element={
+                <ProtectedRoute>
+                  <UserDashboard />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/product/:productId" element={<ProductPage />} />
             <Route path="/category/:cat" element={<Products />} />
             <Route path="*" element={<NotFound />} />

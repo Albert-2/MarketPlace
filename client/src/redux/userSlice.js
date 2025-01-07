@@ -3,21 +3,21 @@ import { createSlice } from "@reduxjs/toolkit";
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    userId: null,
+    user: null,
     isAuthenticated: false,
   },
   reducers: {
-    setUserId: (state, action) => {
-      state.userId = action.payload;
+    setUser: (state, action) => {
+      state.user = action.payload;
       state.isAuthenticated = true;
     },
     logoutUser: (state) => {
-      state.userId = null;
+      state.user = null;
       state.isAuthenticated = false;
     },
   },
 });
 
-export const selectUserId = (state) => state.user.userId;
-export const { setUserId, logoutUser } = userSlice.actions;
+export const selectUser = (state) => state.user.user; // Selector to get the user object
+export const { setUser, logoutUser } = userSlice.actions;
 export default userSlice.reducer;

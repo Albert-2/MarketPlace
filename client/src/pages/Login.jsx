@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setUserId } from "../redux/userSlice";
+import { setUser } from "../redux/userSlice";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -31,7 +31,7 @@ function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        dispatch(setUserId(data.user._id));
+        dispatch(setUser(data.user));
         setError(null);
         navigate("/");
       } else {

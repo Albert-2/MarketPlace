@@ -22,5 +22,6 @@ const productsSlice = createSlice({
   },
 });
 
+export const selectProducts = (state) => state.products.products; // Selector to get the user object
 export const { setProducts, addProduct, removeProduct } = productsSlice.actions;
 export default productsSlice.reducer;

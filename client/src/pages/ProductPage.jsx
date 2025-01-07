@@ -18,20 +18,20 @@ const ProductPage = () => {
   };
   if (!product) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="flex items-center justify-center min-h-screen ">
         <h1 className="text-2xl font-bold text-gray-700">Product not found.</h1>
       </div>
     );
   }
 
   return (
-    <div className="h-[91vh] bg-gradient-to-br from-gray-50 to-gray-200 flex items-center justify-center">
-      <div className="w-full mt-20 max-w-6xl mx-auto p-8 bg-white rounded-lg shadow-lg overflow-hidden flex flex-col lg:flex-row">
-        <div className="lg:w-1/2 flex items-center justify-center p-6 bg-gray-100">
+    <div className="h-screen flex items-center justify-center">
+      <div className="w-full mt-20 max-w-6xl mx-auto sm:p-8 p-3 overflow-hidden flex flex-col lg:flex-row">
+        <div className="lg:w-1/2 flex items-center justify-center sm:p-6 p-2 ">
           <img
             src={product.image}
             alt={product.name}
-            className="rounded-lg shadow-lg object-contain max-h-[32rem] w-full"
+            className="object-contain max-h-[32rem] w-full"
           />
         </div>
 
